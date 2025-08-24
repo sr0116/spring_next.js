@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'war' // 내장 Tomcat만 쓰려면 'war' 제거하고 'application' 플러그인 사용 가능
+    id 'org.springframework.boot' version '3.5.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'clanity'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Web (Controller, REST API)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // JPA + Hibernate
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MariaDB JDBC Driver
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+    // Lombok (Getter/Setter, Builder 등)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Tomcat (외부 배포용) - 내장 실행만 할거면 제거 가능
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    // 테스트
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
