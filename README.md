@@ -1,5 +1,4 @@
-✔  ##Spring Boot + Next.js 연동
-
+## ✔  Spring Boot + Next.js 연동
 - Spring Boot API 구성
 
 - ClassController, EnrollController, ClassOpenController 등 REST API 구현
@@ -20,3 +19,4 @@
 - Spring → WebConfig에 @Bean WebMvcConfigurer 등록 (http://localhost:3000 허용)
 - Next.js → next.config.mjs에 headers() 추가
 -> 클래스 목록 → 상세 → 신청 흐름까지 연동 성공
+------
