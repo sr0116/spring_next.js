@@ -1,5 +1,4 @@
-// app/class-open/[openId]/page.js
-import ClassDetail from "@/components/ClassDetail";
+import EnrollPanel from "@/app/components/EnrollPanel";
 
 export default async function ClassOpenDetail({ params }) {
   const { openId } = params;

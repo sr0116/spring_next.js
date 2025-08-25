@@ -17,7 +17,7 @@ export default function ClassList() {
   return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         {classes.map((c) => (
-            <Link key={c.classId} href={`/classes/${c.classId}`}>
+            <Link key={c.classId} href={`/class/${c.classId}`}>
               <div className="bg-white shadow-lg rounded-xl overflow-hidden border hover:shadow-xl transition cursor-pointer">
                 {/* 썸네일 */}
                 <img
