@@ -1,51 +1,65 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { getClassDetail } from "@/app/lib/api";
+import api from "@/app/lib/api";
 import Link from "next/link";
 
-export default function ClassDetailPage() {
-  const { id } = useParams();
+export default function ClassDetail({ classId }) {
   const [detail, setDetail] = useState(null);
+  const [opens, setOpens] = useState([]);
 
   useEffect(() => {
-    if (!id) return;
-    getClassDetail(id).then(setDetail).catch(console.error);
-  }, [id]);
+    if (!classId) return;
 
-  if (!detail) return <p className="text-gray-500 mt-6">로딩중...</p>;
+    // 클래스 상세
+    api.get(`/classes/${classId}`)
+      .then((res) => setDetail(res.data))
+      .catch(console.error);
+
+    // 이 클래스의 open 목록 (백엔드에 /api/opens/class/{classId} 같은 엔드포인트가 있어야 함)
+    api.get(`/opens/class/${classId}`)
+      .then((res) => setOpens(res.data))
+      .catch(console.error);
+  }, [classId]);
+
+  if (!detail) return <p>로딩중...</p>;
 
   return (
-      <div className="max-w-3xl mx-auto mt-8 bg-white shadow-lg rounded-xl overflow-hidden border">
-        {/* 대표 이미지 */}
-        <img
-            src={detail.thumbnailImage || "/default-thumbnail.jpg"}
-            alt={detail.title}
-            className="w-full h-64 object-cover"
-        />
+    <div className="space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold">{detail.title}</h1>
+        <p className="text-gray-600">{detail.description}</p>
+        <p className="font-semibold">가격: {detail.price?.toLocaleString()}원</p>
+      </header>
 
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-800">{detail.title}</h1>
-          <p className="text-gray-600 mt-2">{detail.description}</p>
+      <section className="space-y-2">
+        <h2 className="text-xl font-semibold">회차 선택</h2>
+        {!opens.length ? (
+          <p className="text-gray-500">열린 회차가 없습니다.</p>
+        ) : (
+          <ul className="grid sm:grid-cols-2 gap-3">
+            {opens.map((op) => (
+              <li key={op.openId} className="border rounded p-3 flex items-center justify-between">
+                <div>
+                  <div className="font-medium">
+                    {op.scheduleDate} {op.startTime}~{op.endTime}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    정원 {op.minParticipants}~{op.maxParticipants} / 가격 {op.price?.toLocaleString()}원
+                  </div>
+                </div>
 
-          <div className="mt-4 space-y-2">
-            <p className="text-lg font-semibold text-red-500">
-              가격: {detail.price}원
-            </p>
-            <p className="text-gray-700">강사: {detail.instructorName}</p>
-            <p className="text-gray-500 text-sm">난이도: {detail.difficulty}</p>
-            <p className="text-gray-500 text-sm">지역: {detail.region}</p>
-          </div>
-
-          {/* 신청 버튼 */}
-          <div className="mt-6">
-            <Link href={`/enroll/${id}`}>
-              <button className="px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition">
-                이 클래스 신청하기
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
+                {/* 신청 페이지로 이동: openId 사용 */}
+                <Link
+                  className="px-3 py-2 text-sm rounded bg-indigo-600 text-white hover:bg-indigo-700"
+                  href={`/enroll/${op.openId}`}
+                >
+                  신청하기
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
   );
 }

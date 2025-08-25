@@ -1,11 +1,10 @@
 import ClassDetail from "@/app/components/ClassDetail";
 
 export default function ClassDetailPage({ params }) {
-  const { id } = params;
-
+  const classId = Number(params.id);
   return (
-      <div>
-        <ClassDetail id={id} />
-      </div>
+    <div className="p-6">
+      <ClassDetail classId={classId} />
+    </div>
   );
 }

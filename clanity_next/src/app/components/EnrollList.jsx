@@ -7,18 +7,18 @@ export default function EnrollList({ openId }) {
 
   useEffect(() => {
     if (!openId) return;
-    getEnrollsByOpen(openId)
-        .then(setEnrolls)
-        .catch(console.error);
+    getEnrollsByOpen(openId).then(setEnrolls).catch(console.error);
   }, [openId]);
 
+  if (enrolls.length === 0) return <p>아직 신청자가 없습니다.</p>;
+
   return (
-      <ul>
-        {enrolls.map((enroll) => (
-            <li key={enroll.enrollId}>
-              수강생 ID: {enroll.memberId}, 파트: {enroll.parts}
-            </li>
-        ))}
-      </ul>
+    <ul className="space-y-2">
+      {enrolls.map((enroll) => (
+        <li key={enroll.enrollId} className="p-3 border rounded">
+          수강생 ID: {enroll.memberId}, 파트: {enroll.parts}
+        </li>
+      ))}
+    </ul>
   );
 }
