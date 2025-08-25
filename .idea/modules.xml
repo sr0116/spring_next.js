@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/spring_next.js.iml" filepath="$PROJECT_DIR$/.idea/spring_next.js.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/next.iml" filepath="$PROJECT_DIR$/.idea/next.iml" />
+>>>>>>> a4c7e769dbded5f5c317a316e0aad09ba0bb56ad
     </modules>
   </component>
 </project>
